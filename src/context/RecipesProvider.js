@@ -16,7 +16,8 @@ export default function RecipesProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      loginState: { login, setLogin }, headerState: { header, setHeader } }),
+      loginState: { login, setLogin },
+      headerState: { header, setHeader } }),
     [login, header],
   );
 
