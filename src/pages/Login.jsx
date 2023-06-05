@@ -23,7 +23,7 @@ export default function Login() {
         data-testid="email-input"
         value={ login.email }
         onChange={ ({ target }) => {
-          setLogin({ ...login, email: target.value });
+          setLogin({ ...loginState, email: target.value });
         } }
       />
       <input
@@ -33,7 +33,7 @@ export default function Login() {
         data-testid="password-input"
         value={ login.password }
         onChange={ ({ target }) => {
-          setLogin({ ...login, password: target.value });
+          setLogin({ ...loginState, password: target.value });
         } }
       />
       <button
