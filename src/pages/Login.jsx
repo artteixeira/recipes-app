@@ -12,7 +12,7 @@ export default function Login() {
 
   const minLengthPassword = 6;
   const buttonDisable = validator
-    .isEmail(login.email) && login.password.length >= minLengthPassword;
+    .isEmail(login.email) && login.password.length > minLengthPassword;
 
   return (
     <div>
@@ -39,10 +39,10 @@ export default function Login() {
       <button
         type="button"
         data-testid="login-submit-btn"
-        disabled={ buttonDisable }
+        disabled={ !buttonDisable }
         onClick={ () => {
           localStorage.setItem('user', JSON.stringify({ email: login.email }));
-          history.push('/recipes');
+          history.push('/meals');
         } }
       >
         Enter

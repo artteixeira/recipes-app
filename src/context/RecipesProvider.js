@@ -8,8 +8,17 @@ export default function RecipesProvider({ children }) {
     email: '',
     password: '',
   });
+  const [header, setHeader] = useState({
+    title: '',
+    profile: true,
+    search: true,
+  });
 
-  const value = useMemo(() => ({ loginState: { login, setLogin } }), [login]);
+  const value = useMemo(
+    () => ({
+      loginState: { login, setLogin }, headerState: { header, setHeader } }),
+    [login, header],
+  );
 
   return (
     <RecipesContext.Provider
