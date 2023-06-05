@@ -19,6 +19,7 @@ function Header() {
           <button
             data-testid="profile-top-btn"
             onClick={ () => history.push('/profile') }
+            src={ profileIcon }
           >
             <img src={ profileIcon } alt="Profile icon" />
           </button>)}
@@ -27,11 +28,12 @@ function Header() {
         <button
           data-testid="search-top-btn"
           onClick={ () => setInputSearch(!inputSearch) }
+          src={ searchIcon }
         >
           <img src={ searchIcon } alt="Search icon" />
         </button>)}
       { inputSearch
-        && (<input type="text" />)}
+        && (<input type="text" data-testid="search-input" />)}
     </div>
   );
 }
