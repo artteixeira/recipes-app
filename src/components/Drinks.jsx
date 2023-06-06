@@ -3,14 +3,13 @@ import Header from './Header';
 import Footer from './Footer';
 import RecipesContext from '../context/RecipesContext';
 
-function Profile() {
+function Drinks() {
   const { headerState } = useContext(RecipesContext);
-
   useEffect(() => {
     headerState.setHeader({
-      title: 'Profile',
+      title: 'Drinks',
       profile: true,
-      search: false,
+      search: true,
     });
   }, []);
 
@@ -22,4 +21,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default Drinks;

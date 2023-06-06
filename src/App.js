@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import RecipesProvider from './context/RecipesProvider';
 import Login from './pages/Login';
 import Profile from './components/Profile';
-import Recipes from './components/Recipes';
+import Recipes from './pages/Recipes';
 import RecipeDetails from './components/RecipeDetails';
 import RecipeInProgress from './components/RecipeInProgress';
 import DoneRecipes from './components/DoneRecipes';
