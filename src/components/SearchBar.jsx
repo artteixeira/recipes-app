@@ -16,6 +16,12 @@ function SearchBar() {
             ...searchBar,
             value: target.value,
           });
+
+          if (searchBar
+            .type === 'firstLetter'
+            && target
+              .value
+              .length > 1) { alert('Your search must have only 1 (one) character'); }
         } }
       />
       <label

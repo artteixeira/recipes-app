@@ -37,16 +37,16 @@ export default function RecipesProvider({ children }) {
 
   const fetchMeals = async () => {
     const defaultFetch = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    let customUrl = '';
+    let customUrl = null;
     switch (searchBarFilter.type) {
     case 'name':
-      customUrl = `www.themealdb.com/api/json/v1/1/search.php?s=${searchBarFilter.value}`;
+      customUrl = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchBarFilter.value}`;
       break;
     case 'firstLetter':
-      customUrl = `www.themealdb.com/api/json/v1/1/search.php?f=${searchBarFilter.value}`;
+      customUrl = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchBarFilter.value}`;
       break;
     case 'ingredient':
-      customUrl = `www.themealdb.com/api/json/v1/1/filter.php?i=${searchBarFilter.value}`;
+      customUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchBarFilter.value}`;
       break;
     default:
       break;
@@ -61,19 +61,16 @@ export default function RecipesProvider({ children }) {
 
   const fetchDrinks = async () => {
     const defaultFetch = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-    let customUrl = '';
+    let customUrl = null;
     switch (searchBarFilter.type) {
     case 'name':
-      customUrl = `www.thecocktaildb.com/api/json/v1/1/search.php?s=
-      ${searchBarFilter.value}`;
+      customUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchBarFilter.value}`;
       break;
     case 'firstLetter':
-      customUrl = `www.thecocktaildb.com/api/json/v1/1/search.php?f=
-      ${searchBarFilter.value}`;
+      customUrl = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchBarFilter.value}`;
       break;
     case 'ingredient':
-      customUrl = `www.thecocktaildb.com/api/json/v1/1filter.php?i=
-      ${searchBarFilter.value}`;
+      customUrl = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchBarFilter.value}`;
       break;
     default:
       break;
