@@ -4,17 +4,18 @@ import userEvent from '@testing-library/user-event';
 
 import renderWithProvider from './utils/renderWithProvider';
 import Login from '../pages/Login';
+import App from '../App';
 
 describe('Testes da tela de Login', () => {
   test('Verifica se existe um H1 com o nome "Login"', () => {
-    renderWithProvider(<Login />);
+    renderWithProvider(<App />);
 
     const loginTitle = screen.getByRole('heading', { name: /login:/i });
 
     expect(loginTitle).toBeInTheDocument();
   });
   test('Verifica se o botão está desabilitado e se o botão habilita após digitar nos inputs corretamente', async () => {
-    renderWithProvider(<Login />);
+    renderWithProvider(<App />);
     const enterButton = await screen.findByRole('button', { name: /enter/i });
 
     expect(enterButton).toBeDisabled();
@@ -28,7 +29,7 @@ describe('Testes da tela de Login', () => {
     jest.spyOn(Storage.prototype, 'setItem');
     Storage.prototype.setItem = jest.fn();
 
-    const { history } = renderWithProvider(<Login />);
+    const { history } = renderWithProvider(<App />);
     const enterButton = await screen.findByRole('button', { name: /enter/i });
 
     userEvent.type(screen.getByTestId('password-input'), '1234567');
