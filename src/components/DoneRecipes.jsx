@@ -12,6 +12,7 @@ function DoneRecipes() {
       search: false,
     });
   }, []);
+
   return (
     <Header />
   );
