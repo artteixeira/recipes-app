@@ -6,7 +6,7 @@ import mealIcon from '../images/mealIcon.svg';
 function Footer() {
   const history = useHistory();
   return (
-    <footer data-testid="footer">
+    <footer data-testid="footer" className="footer">
       <button
         data-testid="drinks-bottom-btn"
         src={ drinkIcon }
