@@ -16,16 +16,14 @@ function Profile() {
     });
   }, []);
 
-  const email = JSON.parse(localStorage.getItem('user'));
-  const value = Object.values(email);
-  console.log(value);
+  const email = JSON.parse(localStorage.getItem('user'))?.email;
 
   return (
     <div>
       <Header />
       <main>
         <h1 data-testid="profile-email">
-          {value}
+          {email}
         </h1>
         <button
           data-testid="profile-done-btn"
