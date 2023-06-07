@@ -1,9 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 import RecipesContext from './RecipesContext';
 
 export default function RecipesProvider({ children }) {
+  const history = useHistory();
   const [login, setLogin] = useState({
     email: '',
     password: '',
@@ -25,15 +27,7 @@ export default function RecipesProvider({ children }) {
 
   const [recipesList, setRecipesList] = useState('');
 
-  const value = useMemo(
-    () => ({
-      loginState: { login, setLogin },
-      headerState: { header, setHeader },
-      recipesList,
-      searchBarState: { searchBar, setSearchBar },
-      setSearchBarFilter }),
-    [login, header, recipesList, searchBar, setSearchBarFilter],
-  );
+  const [recipeDetail, setRecipeDetail] = useState([]);
 
   const fetchMeals = async () => {
     const defaultFetch = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
@@ -53,10 +47,24 @@ export default function RecipesProvider({ children }) {
     }
     const response = await fetch(customUrl || defaultFetch);
     const data = await response.json();
-    setRecipesList(data.meals.filter((element, index) => {
-      const magicNumber = 12;
-      return index < magicNumber && element;
-    }));
+
+    if (data.meals === null) {
+      global.alert(
+        'Sorry, we haven\'t found any recipes for these filters.',
+      );
+      return setSearchBarFilter({
+        type: '',
+        value: '',
+      });
+    } if (data.meals.length === 1) {
+      const id = data.meals[0].idMeal;
+      history.push(`/meals/${id}`);
+    } else {
+      setRecipesList(data.meals.filter((element, index) => {
+        const magicNumber = 12;
+        return index < magicNumber && element;
+      }));
+    }
   };
 
   const fetchDrinks = async () => {
@@ -77,11 +85,26 @@ export default function RecipesProvider({ children }) {
     }
     const response = await fetch(customUrl || defaultFetch);
     const data = await response.json();
-    setRecipesList(data.drinks.filter((element, index) => {
-      const magicNumber = 12;
-      return index < magicNumber && element;
-    }));
+
+    if (data.drinks === null) {
+      global.alert(
+        'Sorry, we haven\'t found any recipes for these filters.',
+      );
+      return setSearchBarFilter({
+        type: '',
+        value: '',
+      });
+    } if (data.drinks.length === 1) {
+      const id = data.drinks[0].idDrink;
+      history.push(`/drinks/${id}`);
+    } else {
+      setRecipesList(data.drinks.filter((element, index) => {
+        const magicNumber = 12;
+        return index < magicNumber && element;
+      }));
+    }
   };
+
   const fetchAPI = () => {
     if (header.title === 'Meals') {
       fetchMeals();
@@ -93,6 +116,36 @@ export default function RecipesProvider({ children }) {
   useEffect(() => {
     fetchAPI();
   }, [searchBarFilter, header.title]);
+
+  const fetchById = async (id, type) => {
+    const url = type === 'drinks' ? 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' : 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
+
+    const response = await
+    fetch(`${url}${id}`);
+    const data = await response.json();
+    setRecipeDetail(data[type]);
+  };
+
+  const value = useMemo(
+    () => ({
+      loginState: { login, setLogin },
+      headerState: { header, setHeader },
+      recipesList,
+      searchBarState: { searchBar, setSearchBar },
+      setSearchBarFilter,
+      history,
+      fetchById,
+      recipeDetail }),
+    [
+      login,
+      header,
+      recipesList,
+      searchBar,
+      setSearchBarFilter,
+      fetchById,
+      recipeDetail,
+      history],
+  );
 
   return (
     <RecipesContext.Provider

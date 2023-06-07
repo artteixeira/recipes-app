@@ -78,7 +78,7 @@ function SearchBar() {
       <button
         type="button"
         data-testid="exec-search-btn"
-        onClick={ () => {
+        onClick={ async () => {
           setSearchBarFilter(searchBar);
         } }
       >
