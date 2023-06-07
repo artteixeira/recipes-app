@@ -48,7 +48,7 @@ describe('Testa o componente SearchBar', () => {
     expect(ingredientRadioBtn.checked).toBe(true);
   });
 
-  test('Verifica se o estado do radio button muda ao ser selecionado', async () => {
+  test('Verifica se ao filtrar um item que possui um único retorno, redireciona o usuário para a página de detalhes da receita', async () => {
     const { history } = renderWithRouter(<App />, '/meals');
     const searchBtn = screen.getByRole('img', {
       name: /search icon/i,
