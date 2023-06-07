@@ -29,6 +29,17 @@ export default function RecipesProvider({ children }) {
 
   const [recipeDetail, setRecipeDetail] = useState([]);
 
+  const [categoryList, setCategoryList] = useState([]);
+
+  const fetchMealsCategory = async () => {
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    const data = await response.json();
+    setCategoryList(data.meals.filter((element, index) => {
+      const magicNumber = 5;
+      return index < magicNumber && element;
+    }));
+  };
+
   const fetchMeals = async () => {
     const defaultFetch = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
     let customUrl = null;
@@ -60,11 +71,21 @@ export default function RecipesProvider({ children }) {
       const id = data.meals[0].idMeal;
       history.push(`/meals/${id}`);
     } else {
+      fetchMealsCategory();
       setRecipesList(data.meals.filter((element, index) => {
         const magicNumber = 12;
         return index < magicNumber && element;
       }));
     }
+  };
+
+  const fetchDrinksCategory = async () => {
+    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+    const data = await response.json();
+    setCategoryList(data.drinks.filter((element, index) => {
+      const magicNumber = 5;
+      return index < magicNumber && element;
+    }));
   };
 
   const fetchDrinks = async () => {
@@ -98,6 +119,7 @@ export default function RecipesProvider({ children }) {
       const id = data.drinks[0].idDrink;
       history.push(`/drinks/${id}`);
     } else {
+      fetchDrinksCategory();
       setRecipesList(data.drinks.filter((element, index) => {
         const magicNumber = 12;
         return index < magicNumber && element;
@@ -126,6 +148,17 @@ export default function RecipesProvider({ children }) {
     setRecipeDetail(data[type]);
   };
 
+  const fetchByFilter = async (filter, type) => {
+    const url = type === 'drinks' ? 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=' : 'https://www.themealdb.com/api/json/v1/1/filter.php?c=';
+
+    const response = await fetch(`${url}${filter}`);
+    const data = await response.json();
+    setRecipesList(data[type].filter((element, index) => {
+      const magicNumber = 12;
+      return index < magicNumber && element;
+    }));
+  };
+
   const value = useMemo(
     () => ({
       loginState: { login, setLogin },
@@ -135,7 +168,10 @@ export default function RecipesProvider({ children }) {
       setSearchBarFilter,
       history,
       fetchById,
-      recipeDetail }),
+      recipeDetail,
+      categoryList,
+      fetchAPI,
+      fetchByFilter }),
     [
       login,
       header,
@@ -144,7 +180,8 @@ export default function RecipesProvider({ children }) {
       setSearchBarFilter,
       fetchById,
       recipeDetail,
-      history],
+      history,
+      categoryList, fetchAPI],
   );
 
   return (
