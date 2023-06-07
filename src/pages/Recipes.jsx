@@ -1,14 +1,13 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useContext } from 'react';
+import RecipesContext from '../context/RecipesContext';
 import Meals from '../components/Meals';
 import Drinks from '../components/Drinks';
 
 function Recipes() {
-  const history = useHistory();
-  const { pathname } = history.location;
+  const { history: { location: { pathname } } } = useContext(RecipesContext);
   return (
     <div>
-      { pathname === '/meals'
+      { pathname.includes('/meals')
         ? (<Meals />)
         : (<Drinks />)}
     </div>

@@ -73,3 +73,18 @@
     transform: rotate(-10deg);
   }
 }
+
+.recipe-container {
+  align-content: space-between;
+  display: flex;
+  flex-direction: row;
+}
+
+.recipe-card {
+  display: flex;
+  flex-direction: row;
+}
+
+.img-card {
+  width: 50px;
+}
