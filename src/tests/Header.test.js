@@ -8,6 +8,10 @@ import renderWithRouter from './utils/renderWithRouter';
 describe('Testes do componente Header', () => {
   test('Testa se ao clicar no botão do Perfil, é enviado para o /profile', async () => {
     const { history } = renderWithRouter(<App />, '/meals');
+    const user = { email: 'alguem@alguem.com' };
+    localStorage.setItem('user', JSON.stringify(user));
+    jest.spyOn(Object.getPrototypeOf(global.localStorage), 'getItem')
+      .mockReturnValue(JSON.stringify(user));
 
     await screen.findByRole('heading', {
       name: /meals/i,
