@@ -21,7 +21,9 @@ function SearchBar() {
             .type === 'firstLetter'
             && target
               .value
-              .length > 1) { alert('Your search must have only 1 (one) character'); }
+              .length > 1) {
+            global.alert('Your search must have only 1 (one) character');
+          }
         } }
       />
       <label
