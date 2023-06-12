@@ -1,7 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import clipboardCopy from 'clipboard-copy';
 import RecipesContext from '../context/RecipesContext';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeart from '../images/whiteHeartIcon.svg';
+import blackHeart from '../images/blackHeartIcon.svg';
 
 import {
   fetchRecomendationMealsAPI, fetchRecomendationDrinksAPI,
@@ -18,18 +22,57 @@ function RecipeDetails(props) {
     history,
   } = useContext(RecipesContext);
 
+  const { location: { pathname } } = history;
+
   const [recomendedList, setRecomendedList] = useState([]);
 
   const [recipeStatus, setRecipeStatus] = useState({});
 
+  const [favoriteRecipe, setFavoriteRecipe] = useState(); // estado utilizado para gerenciar o botão de favoritos
+
+  const [copiedLinkMessage, setCopiedLinkMessage] = useState(false); // estado que gerencia a exibição da mensagem 'Link copied".
+
+  // const [savedRecipe, setSavedRecipe] = useState({});
+
   const type = match.path.includes('drink') ? 'drinks' : 'meals';
 
-  const fetchRecomendation = async (xablau) => {
+  const fetchRecomendation = async (path) => {
     const recomendationForMeals = await fetchRecomendationMealsAPI();
     const recomendationForDrinks = await fetchRecomendationDrinksAPI();
-    if (xablau.includes('meals')) {
+    if (path.includes('meals')) {
       return setRecomendedList(recomendationForMeals);
     } return setRecomendedList(recomendationForDrinks);
+  };
+
+  const setFavoriteList = () => {
+    const storage = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    let newFavorite = {};
+    const {
+      idMeal,
+      idDrink,
+      strArea,
+      strCategory,
+      strMeal,
+      strMealThumb,
+      strAlcoholic,
+      strDrink,
+      strDrinkThumb } = recipeDetail[0];
+
+    const favorite = {
+      id: idMeal || idDrink,
+      type,
+      nationality: strArea || '',
+      category: strCategory || '',
+      alcoholicOrNot: strAlcoholic || '',
+      name: strMeal || strDrink,
+      image: strMealThumb || strDrinkThumb,
+    };
+    const isFavorite = storage.some((recipe) => recipe.id === id); // verifiico se o id do item atual bate com o id de algum dos itens salvos no meu storage;
+    if (isFavorite) {
+      newFavorite = favorite.filter((recipe) => recipe.id === id);
+    } newFavorite = [...storage, favorite];
+
+    localStorage.setItem('favoriteRecipes', newFavorite);
   };
 
   useEffect(() => {
@@ -46,8 +89,35 @@ function RecipeDetails(props) {
     return index < magicNumber && element;
   };
 
+  const url = `http://localhost:3000${pathname}`;
+
   return (
     <>
+      <button
+        data-testid="share-btn"
+        onClick={ () => {
+          clipboardCopy(url);
+          setCopiedLinkMessage(true);
+          const magicNumber = 1000;
+          setTimeout(() => setCopiedLinkMessage(false), magicNumber);
+        } }
+      >
+        <img src={ shareIcon } alt="Share icon" />
+      </button>
+
+      <button
+        data-testid="favorite-btn"
+        onClick={ () => {
+          setFavoriteRecipe(!favoriteRecipe);
+          setFavoriteList();
+        } }
+      >
+        { favoriteRecipe
+          ? (<img src={ blackHeart } alt="Black heart icon" />)
+          : (<img src={ whiteHeart } alt="White heart icon" />)}
+      </button>
+
+      {copiedLinkMessage && (<h1>Link copied!</h1>)}
       <div>
         {recipeDetail && recipeDetail.map((element) => {
           const ingredientsList = [];
