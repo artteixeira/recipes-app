@@ -67,12 +67,13 @@ function RecipeDetails(props) {
       name: strMeal || strDrink,
       image: strMealThumb || strDrinkThumb,
     };
-    const isFavorite = storage.some((recipe) => recipe.id === id); // verifiico se o id do item atual bate com o id de algum dos itens salvos no meu storage;
+    const isFavorite = storage.some((recipe) => recipe.id === id); // verifico se o id do item atual bate com o id de algum dos itens salvos no meu storage;
     if (isFavorite) {
-      newFavorite = favorite.filter((recipe) => recipe.id === id);
-    } newFavorite = [...storage, favorite];
-
-    localStorage.setItem('favoriteRecipes', newFavorite);
+      newFavorite = storage.filter((recipe) => recipe.id !== id);
+    } else {
+      newFavorite = JSON.stringify([...storage, favorite]);
+    }
+    localStorage.setItem('favoriteRecites', newFavorite);
   };
 
   useEffect(() => {
