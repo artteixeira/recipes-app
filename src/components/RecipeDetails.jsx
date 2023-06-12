@@ -15,9 +15,12 @@ function RecipeDetails(props) {
     fetchById,
     recipeDetail,
     setSearchBarFilter,
+    history,
   } = useContext(RecipesContext);
 
   const [recomendedList, setRecomendedList] = useState([]);
+
+  const [recipeStatus, setRecipeStatus] = useState({});
 
   const type = match.path.includes('drink') ? 'drinks' : 'meals';
 
@@ -100,34 +103,50 @@ function RecipeDetails(props) {
                   gyroscope;
                   picture-in-picture;
                   web-share"
-                  allowfullscreen
+                  allowFullScreen
                 />
               )}
             </div>
           );
         })}
       </div>
-      {
-        recomendedList && recomendedList.filter(filterRecomendationCard)
-          .map((element, index) => (
-            <div
-              className="recipe-card"
-              key={ element.idMeal || element.idDrink }
-              data-testid={ `${index}-recommendation-card` }
-            >
-              <img
-                className="img-card"
-                src={ element.strMealThumb || element.strDrinkThumb }
-                alt={ element.strMeal || element.strDrink }
-              />
-              <h1
-                data-testid={ `${index}-recommendation-title` }
+      <div className="recomended-card">
+        {
+          recomendedList && recomendedList.filter(filterRecomendationCard)
+            .map((element, index) => (
+              <div
+                className="recipe-card"
+                key={ element.idMeal || element.idDrink }
+                data-testid={ `${index}-recommendation-card` }
               >
-                {element.strMeal || element.strDrink }
-              </h1>
-            </div>
-          ))
-      }
+                <img
+                  className="img-recomended-card"
+                  src={ element.strMealThumb || element.strDrinkThumb }
+                  alt={ element.strMeal || element.strDrink }
+                />
+                <h1
+                  data-testid={ `${index}-recommendation-title` }
+                >
+                  {element.strMeal || element.strDrink }
+                </h1>
+              </div>
+            ))
+        }
+      </div>
+      <button
+        className="start-recipe-button"
+        data-testid="start-recipe-btn"
+        onClick={ () => {
+          localStorage
+            .setItem('inProgressRecipes', JSON.stringify(`${type}: { ${id} }`));
+          setRecipeStatus(JSON.parse(localStorage.getItem('inProgressRecipes')));
+          history.push(`/${type}/${id}/in-progress`);
+        } }
+      >
+        {
+          !recipeStatus ? 'Start Recipe' : 'Continue Recipe'
+        }
+      </button>
     </>
   );
 }
