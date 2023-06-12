@@ -31,6 +31,8 @@ export default function RecipesProvider({ children }) {
 
   const [categoryList, setCategoryList] = useState([]);
 
+  const [copiedLinkMessage, setCopiedLinkMessage] = useState(false);
+
   const fetchMealsCategory = async () => {
     const response = await fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
     const data = await response.json();
@@ -171,7 +173,10 @@ export default function RecipesProvider({ children }) {
       recipeDetail,
       categoryList,
       fetchAPI,
-      fetchByFilter }),
+      fetchByFilter,
+      copiedLinkMessage,
+      setCopiedLinkMessage,
+    }),
     [
       login,
       header,
@@ -181,7 +186,11 @@ export default function RecipesProvider({ children }) {
       fetchById,
       recipeDetail,
       history,
-      categoryList, fetchAPI],
+      categoryList,
+      fetchAPI,
+      copiedLinkMessage,
+      setCopiedLinkMessage,
+    ],
   );
 
   return (
