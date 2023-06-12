@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import clipboardCopy from 'clipboard-copy';
 import RecipesContext from '../context/RecipesContext';
 import shareIcon from '../images/shareIcon.svg';
-import whiteHeart from '../images/whiteHeartIcon.svg';
-import blackHeart from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 import {
   fetchRecomendationMealsAPI, fetchRecomendationDrinksAPI,
@@ -24,17 +24,20 @@ function RecipeDetails(props) {
 
   const { location: { pathname } } = history;
 
-  const [recomendedList, setRecomendedList] = useState([]);
+  let ingredients = [];
+  let measures = [];
 
-  const [recipeStatus, setRecipeStatus] = useState({});
+  const type = match.path.includes('drink') ? 'drinks' : 'meals';
+  const [recomendedList, setRecomendedList] = useState([]);
+  const recipeStatusStorage = JSON.parse(localStorage
+    .getItem('inProgressRecipes'));
+
+  const [recipeStatus] = useState(recipeStatusStorage ? Object
+    .keys(recipeStatusStorage[type]).includes(id) : false);
 
   const [favoriteRecipe, setFavoriteRecipe] = useState(); // estado utilizado para gerenciar o botão de favoritos
 
   const [copiedLinkMessage, setCopiedLinkMessage] = useState(false); // estado que gerencia a exibição da mensagem 'Link copied".
-
-  // const [savedRecipe, setSavedRecipe] = useState({});
-
-  const type = match.path.includes('drink') ? 'drinks' : 'meals';
 
   const fetchRecomendation = async (path) => {
     const recomendationForMeals = await fetchRecomendationMealsAPI();
@@ -47,6 +50,7 @@ function RecipeDetails(props) {
   const setFavoriteList = () => {
     const storage = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     let newFavorite = {};
+    const strType = match.path.includes('drink') ? 'drink' : 'meal';
     const {
       idMeal,
       idDrink,
@@ -60,20 +64,26 @@ function RecipeDetails(props) {
 
     const favorite = {
       id: idMeal || idDrink,
-      type,
+      type: strType,
       nationality: strArea || '',
       category: strCategory || '',
       alcoholicOrNot: strAlcoholic || '',
       name: strMeal || strDrink,
       image: strMealThumb || strDrinkThumb,
     };
+
     const isFavorite = storage.some((recipe) => recipe.id === id); // verifico se o id do item atual bate com o id de algum dos itens salvos no meu storage;
     if (isFavorite) {
       newFavorite = storage.filter((recipe) => recipe.id !== id);
     } else {
-      newFavorite = JSON.stringify([...storage, favorite]);
+      newFavorite = [...storage, favorite];
     }
-    localStorage.setItem('favoriteRecites', newFavorite);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
+  };
+
+  const verifyFavorites = () => {
+    const storage = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    if (storage.some((recipe) => recipe.id === id)) setFavoriteRecipe(true);
   };
 
   useEffect(() => {
@@ -83,6 +93,7 @@ function RecipeDetails(props) {
     });
     fetchById(id, type);
     fetchRecomendation(type);
+    verifyFavorites();
   }, []);
 
   const filterRecomendationCard = (element, index) => {
@@ -108,14 +119,15 @@ function RecipeDetails(props) {
 
       <button
         data-testid="favorite-btn"
+        src={ favoriteRecipe ? blackHeartIcon : whiteHeartIcon }
         onClick={ () => {
           setFavoriteRecipe(!favoriteRecipe);
           setFavoriteList();
         } }
       >
         { favoriteRecipe
-          ? (<img src={ blackHeart } alt="Black heart icon" />)
-          : (<img src={ whiteHeart } alt="White heart icon" />)}
+          ? (<img src={ blackHeartIcon } alt="Black heart icon" />)
+          : (<img src={ whiteHeartIcon } alt="White heart icon" />)}
       </button>
 
       {copiedLinkMessage && (<h1>Link copied!</h1>)}
@@ -129,6 +141,10 @@ function RecipeDetails(props) {
             const measure = element[`strMeasure${i}`];
             if (ingredient) ingredientsList.push(ingredient);
             if (measure) measuresList.push(measure);
+            if (i === magicNumber) {
+              ingredients = ingredientsList;
+              measures = measuresList;
+            }
           }
           return (
             <div key={ element.idMeal || element.idDrink }>
@@ -146,14 +162,14 @@ function RecipeDetails(props) {
               </p>
               <div>
                 <p>Ingredients</p>
-                { ingredientsList.map((ingredient, index) => (
+                { ingredients.map((ingredient, index) => (
                   <div
                     key={ index }
                     data-testid={ `${index}-ingredient-name-and-measure` }
                   >
                     <span>{ingredient}</span>
                     <span>{' - '}</span>
-                    <span>{measuresList[index]}</span>
+                    <span>{measures[index]}</span>
                   </div>
                 ))}
 
@@ -209,8 +225,8 @@ function RecipeDetails(props) {
         data-testid="start-recipe-btn"
         onClick={ () => {
           localStorage
-            .setItem('inProgressRecipes', JSON.stringify(`${type}: { ${id} }`));
-          setRecipeStatus(JSON.parse(localStorage.getItem('inProgressRecipes')));
+            .setItem('inProgressRecipes', JSON
+              .stringify({ [type]: { [id]: [ingredients, measures] } }));
           history.push(`/${type}/${id}/in-progress`);
         } }
       >

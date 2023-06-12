@@ -21,10 +21,12 @@ function App() {
           <Route exact path="/meals" component={ Recipes } />
           <Route exact path="/drinks" component={ Recipes } />
           <Route
+            exact
             path="/meals/:id"
             render={ (props) => <RecipeDetails { ...props } /> }
           />
           <Route
+            exact
             path="/drinks/:id"
             render={ (props) => <RecipeDetails { ...props } /> }
           />
