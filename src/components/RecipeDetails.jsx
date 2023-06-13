@@ -13,7 +13,7 @@ import {
 
 function RecipeDetails(props) {
   const { match } = props;
-  const { params } = match;
+  const { params, path, url } = match;
   const { id } = params;
   const {
     fetchById,
@@ -22,16 +22,13 @@ function RecipeDetails(props) {
     history,
   } = useContext(RecipesContext);
 
-  const { location: { pathname } } = history;
-
   let ingredients = [];
   let measures = [];
 
-  const type = match.path.includes('drink') ? 'drinks' : 'meals';
+  const type = path.includes('drink') ? 'drinks' : 'meals';
   const [recomendedList, setRecomendedList] = useState([]);
   const recipeStatusStorage = JSON.parse(localStorage
     .getItem('inProgressRecipes'));
-
   const [recipeStatus] = useState(recipeStatusStorage ? Object
     .keys(recipeStatusStorage[type]).includes(id) : false);
 
@@ -39,10 +36,10 @@ function RecipeDetails(props) {
 
   const [copiedLinkMessage, setCopiedLinkMessage] = useState(false); // estado que gerencia a exibição da mensagem 'Link copied".
 
-  const fetchRecomendation = async (path) => {
+  const fetchRecomendation = async (pathname) => {
     const recomendationForMeals = await fetchRecomendationMealsAPI();
     const recomendationForDrinks = await fetchRecomendationDrinksAPI();
-    if (path.includes('meals')) {
+    if (pathname.includes('meals')) {
       return setRecomendedList(recomendationForMeals);
     } return setRecomendedList(recomendationForDrinks);
   };
@@ -50,7 +47,7 @@ function RecipeDetails(props) {
   const setFavoriteList = () => {
     const storage = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     let newFavorite = {};
-    const strType = match.path.includes('drink') ? 'drink' : 'meal';
+    const strType = path.includes('drink') ? 'drink' : 'meal';
     const {
       idMeal,
       idDrink,
@@ -101,14 +98,14 @@ function RecipeDetails(props) {
     return index < magicNumber && element;
   };
 
-  const url = `http://localhost:3000${pathname}`;
+  const newUrl = `http://localhost:3000${url}`;
 
   return (
     <>
       <button
         data-testid="share-btn"
         onClick={ () => {
-          clipboardCopy(url);
+          clipboardCopy(newUrl);
           setCopiedLinkMessage(true);
           const magicNumber = 1000;
           setTimeout(() => setCopiedLinkMessage(false), magicNumber);
@@ -224,9 +221,6 @@ function RecipeDetails(props) {
         className="start-recipe-button"
         data-testid="start-recipe-btn"
         onClick={ () => {
-          localStorage
-            .setItem('inProgressRecipes', JSON
-              .stringify({ [type]: { [id]: [ingredients, measures] } }));
           history.push(`/${type}/${id}/in-progress`);
         } }
       >
@@ -241,6 +235,7 @@ function RecipeDetails(props) {
 RecipeDetails.propTypes = {
   match: PropTypes.shape({
     path: PropTypes.string,
+    url: PropTypes.string,
     params: PropTypes.shape({
       id: PropTypes.string,
     }),

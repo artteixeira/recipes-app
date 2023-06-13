@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import clipboardCopy from 'clipboard-copy';
 
 import RecipesContext from '../context/RecipesContext';
 
