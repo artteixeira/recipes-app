@@ -22,10 +22,6 @@ function RecipeDetails(props) {
     history,
   } = useContext(RecipesContext);
 
-  let ingredients = [];
-  let measures = [];
-
-  console.log('path', path);
   const type = path.includes('drink') ? 'drinks' : 'meals';
   const [recomendedList, setRecomendedList] = useState([]);
   const recipeStatusStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
@@ -88,7 +84,7 @@ function RecipeDetails(props) {
       type: '',
       value: '',
     });
-    fetchById(id, type, path);
+    fetchById(id, type);
     fetchRecomendation(type);
     verifyFavorites();
   }, []);
@@ -138,10 +134,6 @@ function RecipeDetails(props) {
             const measure = element[`strMeasure${i}`];
             if (ingredient) ingredientsList.push(ingredient);
             if (measure) measuresList.push(measure);
-            if (i === magicNumber) {
-              ingredients = ingredientsList;
-              measures = measuresList;
-            }
           }
           return (
             <div key={ element.idMeal || element.idDrink }>
@@ -159,14 +151,14 @@ function RecipeDetails(props) {
               </p>
               <div>
                 <p>Ingredients</p>
-                { ingredients.map((ingredient, index) => (
+                { ingredientsList.map((ingredient, index) => (
                   <div
                     key={ index }
                     data-testid={ `${index}-ingredient-name-and-measure` }
                   >
                     <span>{ingredient}</span>
                     <span>{' - '}</span>
-                    <span>{measures[index]}</span>
+                    <span>{measuresList[index]}</span>
                   </div>
                 ))}
 

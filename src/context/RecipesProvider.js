@@ -142,37 +142,12 @@ export default function RecipesProvider({ children }) {
   }, [searchBarFilter, header.title]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchById = async (id, type, path) => {
+  const fetchById = async (id, type) => {
     const url = type === 'drinks' ? 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' : 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
     const response = await
     fetch(`${url}${id}`);
     const data = await response.json();
     setRecipeDetail(data[type]);
-    console.log('path provider', path);
-    if (path.includes('in-progress')) {
-      const ingredientsList = [];
-      const measuresList = [];
-      const magicNumber = 20;
-      for (let i = 0; i <= magicNumber; i += 1) {
-        const ingredient = data[type][0][`strIngredient${i}`];
-        const measure = data[type][0][`strMeasure${i}`];
-        if (ingredient) ingredientsList.push(ingredient);
-        if (measure) measuresList.push(measure);
-      }
-      const oldStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
-      let newStorage;
-
-      if (oldStorage && oldStorage[type]) {
-        const oldTypeData = oldStorage[type];
-        const merged = { ...oldTypeData, [id]: [ingredientsList, measuresList] };
-        newStorage = { ...oldStorage, [type]: merged };
-      } else {
-        newStorage = { ...oldStorage, [type]: { [id]: [ingredientsList, measuresList] } };
-      }
-      localStorage
-        .setItem('inProgressRecipes', JSON
-          .stringify(newStorage));
-    }
   };
 
   const fetchByFilter = async (filter, type) => {

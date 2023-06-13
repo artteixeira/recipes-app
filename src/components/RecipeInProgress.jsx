@@ -7,11 +7,11 @@ import IngredientCard from './IngredientCard';
 
 function RecipeInProgress(props) {
   const { match } = props;
-  const { params: { id }, path, url } = match;
+  const { params: { id }, path } = match;
   const { recipeDetail, fetchById } = useContext(RecipesContext);
   const type = match.path.includes('drink') ? 'drinks' : 'meals';
   useEffect(() => {
-    fetchById(id, type, url);
+    fetchById(id, type);
   }, []);
 
   return (

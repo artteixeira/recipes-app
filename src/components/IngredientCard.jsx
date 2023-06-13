@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 export default function IngredientCard({ ingredient, index, type, id, measures }) {
   const storage = JSON.parse(localStorage.getItem('inProgressRecipes'));
-  const verifyChecked = new Array(storage[type][id][0].length).fill(false);
   const [checked, setChecked] = useState(false);
 
   return (
@@ -15,24 +15,7 @@ export default function IngredientCard({ ingredient, index, type, id, measures }
         name="recipe"
         id="recipe"
         onChange={ () => {
-          setChecked(true);
-          verifyChecked[index] = checked;
-          if (storage && storage[type] && storage[type][id]) {
-            return;
-          }
-
-          const newStorage = {
-            ...storage,
-            [type]: {
-              ...storage[type],
-              [id]: [
-                ...(storage[type]?.[id] || []),
-                verifyChecked,
-              ],
-            },
-          };
-
-          localStorage.setItem('inProgressRecipes', JSON.stringify(newStorage));
+          setChecked(!checked);
         } }
       />
       <span>
@@ -43,3 +26,11 @@ export default function IngredientCard({ ingredient, index, type, id, measures }
     </label>
   );
 }
+
+IngredientCard.propTypes = {
+  ingredient: PropTypes.string,
+  index: PropTypes.number,
+  type: PropTypes.string,
+  id: PropTypes.string,
+  measures: PropTypes.arrayOf(PropTypes.string),
+}.isRequired;
