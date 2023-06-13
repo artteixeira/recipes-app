@@ -31,7 +31,6 @@ function RecipeDetails(props) {
   const recipeStatusStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
   const [recipeStatus] = useState(recipeStatusStorage ? Object
     .keys(recipeStatusStorage[type]).includes(id) : false);
-  console.log(recipeStatus);
 
   const [favoriteRecipe, setFavoriteRecipe] = useState(); // estado utilizado para gerenciar o botão de favoritos
 
