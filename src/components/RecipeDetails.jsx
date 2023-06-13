@@ -25,12 +25,13 @@ function RecipeDetails(props) {
   let ingredients = [];
   let measures = [];
 
+  console.log('path', path);
   const type = path.includes('drink') ? 'drinks' : 'meals';
   const [recomendedList, setRecomendedList] = useState([]);
-  const recipeStatusStorage = JSON.parse(localStorage
-    .getItem('inProgressRecipes'));
+  const recipeStatusStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
   const [recipeStatus] = useState(recipeStatusStorage ? Object
     .keys(recipeStatusStorage[type]).includes(id) : false);
+  console.log(recipeStatus);
 
   const [favoriteRecipe, setFavoriteRecipe] = useState(); // estado utilizado para gerenciar o botão de favoritos
 
@@ -88,7 +89,7 @@ function RecipeDetails(props) {
       type: '',
       value: '',
     });
-    fetchById(id, type);
+    fetchById(id, type, path);
     fetchRecomendation(type);
     verifyFavorites();
   }, []);

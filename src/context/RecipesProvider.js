@@ -141,12 +141,14 @@ export default function RecipesProvider({ children }) {
     fetchAPI();
   }, [searchBarFilter, header.title]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchById = async (id, type, path) => {
     const url = type === 'drinks' ? 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=' : 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
     const response = await
     fetch(`${url}${id}`);
     const data = await response.json();
     setRecipeDetail(data[type]);
+    console.log('path provider', path);
     if (path.includes('in-progress')) {
       const ingredientsList = [];
       const measuresList = [];
