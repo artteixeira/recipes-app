@@ -25,6 +25,11 @@ function RecipeInProgress(props) {
     return setDisableButton(false);
   };
 
+  const verifyTags = (tags) => {
+    if (tags && tags.includes(',')) return tags.split(',');
+    return tags ? [tags] : [];
+  };
+
   useEffect(() => {
     fetchById(id, type, url);
   }, []);
@@ -44,7 +49,10 @@ function RecipeInProgress(props) {
         }
         return (
           <div key={ index }>
-            <ShareButton />
+            <ShareButton
+              id={ id }
+              type={ type }
+            />
             <FavoriteButton
               id={ id }
               path={ path }
@@ -88,7 +96,7 @@ function RecipeInProgress(props) {
                   name: element.strMeal || element.strDrink,
                   category: element.strCategory || '',
                   image: element.strMealThumb || element.strDrinkThumb,
-                  tags: element.strTags ? element.strTags.split(',') : [],
+                  tags: verifyTags(element.strTags),
                   alcoholicOrNot: element.strAlcoholic || '',
                   type: type.replace('s', ''),
                   doneDate: new Date(),

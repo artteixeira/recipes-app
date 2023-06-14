@@ -1,11 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import clipboardCopy from 'clipboard-copy';
+import ShareButton from './ShareButton';
+import FavoriteButton from './FavoriteButton';
 import RecipesContext from '../context/RecipesContext';
-import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 import {
   fetchRecomendationMealsAPI, fetchRecomendationDrinksAPI,
@@ -13,7 +11,7 @@ import {
 
 function RecipeDetails(props) {
   const { match } = props;
-  const { params, path, url } = match;
+  const { params, path } = match;
   const { id } = params;
   const {
     fetchById,
@@ -28,55 +26,12 @@ function RecipeDetails(props) {
   const [recipeStatus] = useState(recipeStatusStorage ? Object
     .keys(recipeStatusStorage[type]).includes(id) : false);
 
-  const [favoriteRecipe, setFavoriteRecipe] = useState(); // estado utilizado para gerenciar o botão de favoritos
-
-  const [copiedLinkMessage, setCopiedLinkMessage] = useState(false); // estado que gerencia a exibição da mensagem 'Link copied".
-
   const fetchRecomendation = async (pathname) => {
     const recomendationForMeals = await fetchRecomendationMealsAPI();
     const recomendationForDrinks = await fetchRecomendationDrinksAPI();
     if (pathname.includes('meals')) {
       return setRecomendedList(recomendationForMeals);
     } return setRecomendedList(recomendationForDrinks);
-  };
-
-  const setFavoriteList = () => {
-    const storage = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-    let newFavorite = {};
-    const strType = path.includes('drink') ? 'drink' : 'meal';
-    const {
-      idMeal,
-      idDrink,
-      strArea,
-      strCategory,
-      strMeal,
-      strMealThumb,
-      strAlcoholic,
-      strDrink,
-      strDrinkThumb } = recipeDetail[0];
-
-    const favorite = {
-      id: idMeal || idDrink,
-      type: strType,
-      nationality: strArea || '',
-      category: strCategory || '',
-      alcoholicOrNot: strAlcoholic || '',
-      name: strMeal || strDrink,
-      image: strMealThumb || strDrinkThumb,
-    };
-
-    const isFavorite = storage.some((recipe) => recipe.id === id); // verifico se o id do item atual bate com o id de algum dos itens salvos no meu storage;
-    if (isFavorite) {
-      newFavorite = storage.filter((recipe) => recipe.id !== id);
-    } else {
-      newFavorite = [...storage, favorite];
-    }
-    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorite));
-  };
-
-  const verifyFavorites = () => {
-    const storage = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-    if (storage.some((recipe) => recipe.id === id)) setFavoriteRecipe(true);
   };
 
   useEffect(() => {
@@ -86,7 +41,6 @@ function RecipeDetails(props) {
     });
     fetchById(id, type);
     fetchRecomendation(type);
-    verifyFavorites();
   }, []);
 
   const filterRecomendationCard = (element, index) => {
@@ -94,36 +48,16 @@ function RecipeDetails(props) {
     return index < magicNumber && element;
   };
 
-  const newUrl = `http://localhost:3000${url}`;
-
   return (
     <>
-      <button
-        data-testid="share-btn"
-        onClick={ () => {
-          clipboardCopy(newUrl);
-          setCopiedLinkMessage(true);
-          const magicNumber = 1000;
-          setTimeout(() => setCopiedLinkMessage(false), magicNumber);
-        } }
-      >
-        <img src={ shareIcon } alt="Share icon" />
-      </button>
-
-      <button
-        data-testid="favorite-btn"
-        src={ favoriteRecipe ? blackHeartIcon : whiteHeartIcon }
-        onClick={ () => {
-          setFavoriteRecipe(!favoriteRecipe);
-          setFavoriteList();
-        } }
-      >
-        { favoriteRecipe
-          ? (<img src={ blackHeartIcon } alt="Black heart icon" />)
-          : (<img src={ whiteHeartIcon } alt="White heart icon" />)}
-      </button>
-
-      {copiedLinkMessage && (<h1>Link copied!</h1>)}
+      <ShareButton
+        type={ type }
+        id={ id }
+      />
+      <FavoriteButton
+        id={ id }
+        path={ path }
+      />
       <div>
         {recipeDetail && recipeDetail.map((element) => {
           const ingredientsList = [];
