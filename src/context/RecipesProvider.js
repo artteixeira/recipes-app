@@ -129,6 +129,7 @@ export default function RecipesProvider({ children }) {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchAPI = () => {
     if (header.title === 'Meals') {
       fetchMeals();
@@ -139,6 +140,7 @@ export default function RecipesProvider({ children }) {
 
   useEffect(() => {
     fetchAPI();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchBarFilter, header.title]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -9,8 +9,8 @@ function ShareButton() {
   const { copiedLinkMessage, setCopiedLinkMessage, history } = useContext(RecipesContext);
 
   const { location: { pathname } } = history;
-
-  const url = `http://localhost:3000${pathname}`;
+  const newPath = pathname.replace('/in-progress', '');
+  const url = `http://localhost:3000${newPath}`;
 
   return (
     <div>
