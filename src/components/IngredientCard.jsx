@@ -44,6 +44,7 @@ export default function IngredientCard(
       <input
         type="checkbox"
         name="recipe"
+        data-testid={ ingredient }
         id="recipe"
         onChange={ handleCheckbox }
         checked={ checked }

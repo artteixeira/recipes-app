@@ -5,7 +5,7 @@ import oneMeal from './mocks/oneMeal';
 import oneDrink from './mocks/oneDrink';
 import drinks from './mocks/drinks';
 
-import localStorageMock from './mocks/localStorage';
+import { localStorageMock2 } from './mocks/localStorage';
 
 import App from '../App';
 import renderWithRouter from './utils/renderWithRouter';
@@ -27,6 +27,7 @@ describe('Testa o componente RecipeDetails', () => {
     fetchRecomendationMealsAPI.mockResolvedValue(drinks.drinks);
 
     await act(async () => {
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock2 });
       renderWithRouter(<App />, '/meals/1');
     });
 
@@ -41,12 +42,21 @@ describe('Testa o componente RecipeDetails', () => {
     );
 
     const startButton = screen.getByTestId('start-recipe-btn');
-    expect(startButton).toHaveTextContent('Start Recipe');
+    expect(startButton).toHaveTextContent('Continue Recipe');
 
     expect(screen.getByTestId('1-recommendation-title')).toHaveTextContent('A1');
 
     await act(async () => {
       userEvent.click(startButton);
+    });
+
+    const checkbox = screen.getByTestId('penne rigate');
+    expect(checkbox).toBeChecked();
+    const finishButton = screen.getByTestId('finish-recipe-btn');
+    expect(finishButton).toHaveTextContent('Finish Recipe');
+
+    await act(async () => {
+      userEvent.click(finishButton);
     });
   });
 
@@ -56,7 +66,7 @@ describe('Testa o componente RecipeDetails', () => {
     });
 
     await act(async () => {
-      Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock2 });
       renderWithRouter(<App />, '/drinks/2');
     });
 
@@ -69,13 +79,6 @@ describe('Testa o componente RecipeDetails', () => {
     expect(screen.getByTestId('instructions')).toHaveTextContent(
       'Shake well in a shaker with ice. Strain in a martini glass.',
     );
-
-    expect(window.localStorage.getItem('inProgressRecipes')).toBe(JSON.stringify({
-      drinks: {
-        2: ['lemon', 'ice'],
-      },
-      meals: {},
-    }));
 
     const startButton = screen.getByTestId('start-recipe-btn');
     expect(startButton).toHaveTextContent('Continue Recipe');

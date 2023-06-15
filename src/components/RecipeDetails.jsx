@@ -24,7 +24,6 @@ function RecipeDetails(props) {
   const recipeStatusStorage = JSON.parse(
     localStorage.getItem('inProgressRecipes'),
   );
-  console.log(type);
   const [recipeStatus] = useState(
     recipeStatusStorage && recipeStatusStorage[type]
       ? Object.keys(recipeStatusStorage[type]).includes(id)

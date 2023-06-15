@@ -6,6 +6,7 @@ import RecipesContext from '../context/RecipesContext';
 function DoneRecipes() {
   const { headerState, history } = useContext(RecipesContext);
   const storage = JSON.parse(localStorage.getItem('doneRecipes'));
+
   useEffect(() => {
     headerState.setHeader({
       title: 'Done Recipes',
