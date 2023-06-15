@@ -6,32 +6,38 @@ import FavoriteButton from './FavoriteButton';
 import RecipesContext from '../context/RecipesContext';
 
 import {
-  fetchRecomendationMealsAPI, fetchRecomendationDrinksAPI,
+  fetchRecomendationMealsAPI,
+  fetchRecomendationDrinksAPI,
 } from '../services/fetchRecomendationAPI';
+
+const magic = 6;
 
 function RecipeDetails(props) {
   const { match } = props;
   const { params, path } = match;
   const { id } = params;
-  const {
-    fetchById,
-    recipeDetail,
-    setSearchBarFilter,
-    history,
-  } = useContext(RecipesContext);
+  const { fetchById,
+    recipeDetail, setSearchBarFilter, history } = useContext(RecipesContext);
 
   const type = path.includes('drink') ? 'drinks' : 'meals';
   const [recomendedList, setRecomendedList] = useState([]);
-  const recipeStatusStorage = JSON.parse(localStorage.getItem('inProgressRecipes'));
-  const [recipeStatus] = useState(recipeStatusStorage ? Object
-    .keys(recipeStatusStorage[type]).includes(id) : false);
+  const recipeStatusStorage = JSON.parse(
+    localStorage.getItem('inProgressRecipes'),
+  );
+  console.log(type);
+  const [recipeStatus] = useState(
+    recipeStatusStorage && recipeStatusStorage[type]
+      ? Object.keys(recipeStatusStorage[type]).includes(id)
+      : false,
+  );
 
   const fetchRecomendation = async (pathname) => {
     const recomendationForMeals = await fetchRecomendationMealsAPI();
     const recomendationForDrinks = await fetchRecomendationDrinksAPI();
     if (pathname.includes('meals')) {
       return setRecomendedList(recomendationForMeals);
-    } return setRecomendedList(recomendationForDrinks);
+    }
+    return setRecomendedList(recomendationForDrinks);
   };
 
   useEffect(() => {
@@ -43,105 +49,88 @@ function RecipeDetails(props) {
     fetchRecomendation(type);
   }, []);
 
-  const filterRecomendationCard = (element, index) => {
-    const magicNumber = 6;
-    return index < magicNumber && element;
-  };
-
   return (
     <>
-      <ShareButton
-        type={ type }
-        id={ id }
-      />
-      <FavoriteButton
-        id={ id }
-        path={ path }
-      />
+      <ShareButton type={ type } id={ id } />
+      <FavoriteButton id={ id } path={ path } />
       <div>
-        {recipeDetail && recipeDetail.map((element) => {
-          const ingredientsList = [];
-          const measuresList = [];
-          const magicNumber = 20;
-          for (let i = 0; i <= magicNumber; i += 1) {
-            const ingredient = element[`strIngredient${i}`];
-            const measure = element[`strMeasure${i}`];
-            if (ingredient) ingredientsList.push(ingredient);
-            if (measure) measuresList.push(measure);
-          }
-          return (
-            <div key={ element.idMeal || element.idDrink }>
-              <h1 data-testid="recipe-title">
-                {element.strMeal || element.strDrink }
-              </h1>
-              <img
-                width="200"
-                data-testid="recipe-photo"
-                src={ element.strMealThumb || element.strDrinkThumb }
-                alt={ element.strMeal || element.strDrink }
-              />
-              <p data-testid="recipe-category">
-                {element.strAlcoholic || element.strCategory}
-              </p>
-              <div>
-                <p>Ingredients</p>
-                { ingredientsList.map((ingredient, index) => (
-                  <div
-                    key={ index }
-                    data-testid={ `${index}-ingredient-name-and-measure` }
-                  >
-                    <span>{ingredient}</span>
-                    <span>{' - '}</span>
-                    <span>{measuresList[index]}</span>
-                  </div>
-                ))}
-
-              </div>
-              <p data-testid="instructions">{element.strInstructions}</p>
-              { element.strYoutube && (
-
-                <iframe
-                  data-testid="video"
-                  width="560"
-                  height="315"
-                  src={ element.strYoutube.replace('watch?v=', 'embed/') }
-                  title="YouTube video player"
-                  allow="accelerometer;
+        {recipeDetail
+          && recipeDetail.map((element) => {
+            const ingredientsList = [];
+            const measuresList = [];
+            const magicNumber = 20;
+            for (let i = 0; i <= magicNumber; i += 1) {
+              const ingredient = element[`strIngredient${i}`];
+              const measure = element[`strMeasure${i}`];
+              if (ingredient) ingredientsList.push(ingredient);
+              if (measure) measuresList.push(measure);
+            }
+            return (
+              <div key={ element.idMeal || element.idDrink }>
+                <h1 data-testid="recipe-title">
+                  {element.strMeal || element.strDrink}
+                </h1>
+                <img
+                  width="200"
+                  data-testid="recipe-photo"
+                  src={ element.strMealThumb || element.strDrinkThumb }
+                  alt={ element.strMeal || element.strDrink }
+                />
+                <p data-testid="recipe-category">
+                  {element.strAlcoholic || element.strCategory}
+                </p>
+                <div>
+                  <p>Ingredients</p>
+                  {ingredientsList.map((ingredient, index) => (
+                    <div
+                      key={ index }
+                      data-testid={ `${index}-ingredient-name-and-measure` }
+                    >
+                      <span>{ingredient}</span>
+                      <span>{' - '}</span>
+                      <span>{measuresList[index]}</span>
+                    </div>
+                  ))}
+                </div>
+                <p data-testid="instructions">{element.strInstructions}</p>
+                {element.strYoutube && (
+                  <iframe
+                    data-testid="video"
+                    width="560"
+                    height="315"
+                    src={ element.strYoutube.replace('watch?v=', 'embed/') }
+                    title="YouTube video player"
+                    allow="accelerometer;
                   autoplay;
                   clipboard-write;
                   encrypted-media;
                   gyroscope;
                   picture-in-picture;
                   web-share"
-                  allowFullScreen
-                />
-              )}
-            </div>
-          );
-        })}
+                    allowFullScreen
+                  />
+                )}
+              </div>
+            );
+          })}
       </div>
       <div className="recomended-card">
-        {
-          recomendedList && recomendedList.filter(filterRecomendationCard)
-            .map((element, index) => (
-              <div
-                className="recipe-card"
-                key={ element.idMeal || element.idDrink }
-                data-testid={ `${index}-recommendation-card` }
-              >
-                <img
-                  className="img-recomended-card"
-                  src={ element.strMealThumb || element.strDrinkThumb }
-                  alt={ element.strMeal || element.strDrink }
-                />
-                <h1
-                  data-testid={ `${index}-recommendation-title` }
-                >
-                  {element.strMeal || element.strDrink }
-                </h1>
-              </div>
-            ))
-        }
+        {recomendedList?.slice(0, magic).map((element, index) => (
+          <div
+            className="recipe-card"
+            key={ element.idMeal || element.idDrink }
+            data-testid={ `${index}-recommendation-card` }
+          >
+            <img
+              className="img-recomended-card"
+              src={ element.strMealThumb || element.strDrinkThumb }
+              alt={ element.strMeal || element.strDrink }
+            />
+            <h1 data-testid={ `${index}-recommendation-title` }>
+              {element.strMeal || element.strDrink}
+            </h1>
+          </div>
+        ))}
       </div>
       <button
         className="start-recipe-button"
@@ -150,9 +139,7 @@ function RecipeDetails(props) {
           history.push(`/${type}/${id}/in-progress`);
         } }
       >
-        {
-          !recipeStatus ? 'Start Recipe' : 'Continue Recipe'
-        }
+        {!recipeStatus ? 'Start Recipe' : 'Continue Recipe'}
       </button>
     </>
   );

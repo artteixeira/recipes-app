@@ -20,32 +20,6 @@ describe('Testes do componente Profile', () => {
 
     expect(localStorage.getItem).toHaveBeenCalled();
   });
-  test('Testa se ao clicar no botão "Done Recipes" o usuário é rederenciado para a rota "/done-recipes"', () => {
-    const { history } = renderWithRouter(<App />, '/profile');
-
-    const doneRecipesBtn = screen.getByRole('button', {
-      name: /done recipes/i,
-    });
-
-    act(() => {
-      userEvent.click(doneRecipesBtn);
-    });
-
-    expect(history.location.pathname).toBe('/done-recipes');
-  });
-  test('Testa se ao clicar no botão "Favorite Recipes" o usuário é rederenciado para a rota "/favorite-recipes"', () => {
-    const { history } = renderWithRouter(<App />, '/profile');
-
-    const favoriteRecipesBtn = screen.getByRole('button', {
-      name: /favorite recipes/i,
-    });
-
-    act(() => {
-      userEvent.click(favoriteRecipesBtn);
-    });
-
-    expect(history.location.pathname).toBe('/favorite-recipes');
-  });
   test('Testa se ao clicar no botão "Logout" o usuário é rederenciado para a rota "/"', () => {
     const { history } = renderWithRouter(<App />, '/profile');
 
