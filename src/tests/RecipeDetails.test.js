@@ -9,7 +9,7 @@ import localStorageMock from './mocks/localStorage';
 
 import App from '../App';
 import renderWithRouter from './utils/renderWithRouter';
-import { fetchRecomendationMealsAPI, fetchRecomendationDrinksAPI } from '../services/fetchRecomendationAPI';
+import { fetchRecomendationMealsAPI } from '../services/fetchRecomendationAPI';
 
 jest.mock('../services/fetchRecomendationAPI', () => ({
   fetchRecomendationMealsAPI: jest.fn(),
