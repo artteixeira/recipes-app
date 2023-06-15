@@ -78,17 +78,14 @@ function FavoriteRecipes() {
             <p data-testid={ `${index}-horizontal-name` }>{element.name}</p>
             <p data-testid={ `${index}-horizontal-done-date` }>{element.doneDate}</p>
 
-            {element.tags && element.tags.map((tag, indexTag) => {
-              if (indexTag > 2) return;
-              return (
-                <p
-                  key={ indexTag }
-                  data-testid={ `${index}-${tag}-horizontal-tag` }
-                >
-                  {tag}
-                </p>
-              );
-            })}
+            {element.tags && element.tags.slice(0, 2).map((tag, indexTag) => (
+              <p
+                key={ indexTag }
+                data-testid={ `${index}-${tag}-horizontal-tag` }
+              >
+                {tag}
+              </p>
+            ))}
           </button>
           <ShareButton
             horizontal
