@@ -72,3 +72,16 @@
 .name-recomended-card {
   margin-top: 10px;
 }
+
+.start-recipe-button {
+  background-color: #8f3e26;
+  border: none;
+  bottom: 0;
+  color: white;
+  font-size: 15px;
+  font-weight: 400;
+  height: 50px;
+  position: fixed;
+  text-transform: uppercase;
+  width: 360px;
+}
