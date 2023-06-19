@@ -51,7 +51,7 @@
 }
 
 .recipe-title-category > p {
-  margin-top: -20px;
+  margin-top: -15px;
   opacity: 0.8;
 }
 
@@ -69,6 +69,34 @@
 }
 
 .recipe-ingredients > p {
+  margin: 10px;
+}
+
+.recipe-ingredients-in-progress {
+  background-color: #f5f1ec;
+  width: 350px;
+}
+
+.recipe-ingredients-in-progress > label {
+  margin: 10px;
+}
+
+.recipe-ingredients-in-progress > label:first-child {
+  margin-top: 20px;
+}
+
+.recipe-ingredients-in-progress > label > span {
+  margin-left: 5px;
+}
+
+.recipe-instructions {
+  background-color: #f5f1ec;
+  margin: 10px;
+  margin-bottom: 50px;
+  width: 350px;
+}
+
+.recipe-instructions > p {
   margin: 10px;
 }
 

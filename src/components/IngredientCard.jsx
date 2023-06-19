@@ -37,23 +37,25 @@ export default function IngredientCard(
   };
 
   return (
-    <label
-      data-testid={ `${index}-ingredient-step` }
-      style={ { textDecoration: checked ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
-    >
-      <input
-        type="checkbox"
-        name="recipe"
-        data-testid={ ingredient }
-        id="recipe"
-        onChange={ handleCheckbox }
-        checked={ checked }
-      />
-      <span>
-        <span>{ingredient}</span>
-        <span>{measures[index] && ` - ${measures[index]}`}</span>
-      </span>
-    </label>
+    <div className="recipe-ingredients-in-progress">
+      <label
+        data-testid={ `${index}-ingredient-step` }
+        style={ { textDecoration: checked ? 'line-through solid rgb(0, 0, 0)' : 'none' } }
+      >
+        <input
+          type="checkbox"
+          name="recipe"
+          data-testid={ ingredient }
+          id="recipe"
+          onChange={ handleCheckbox }
+          checked={ checked }
+        />
+        <span>
+          <span>{ingredient}</span>
+          <span>{measures[index] && ` - ${measures[index]}`}</span>
+        </span>
+      </label>
+    </div>
   );
 }
 

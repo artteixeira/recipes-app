@@ -71,12 +71,15 @@ function RecipeInProgress(props) {
                 </div>
 
               </div>
-              <h1 data-testid="recipe-title">
-                {element.strMeal || element.strDrink}
-              </h1>
-              <p data-testid="recipe-category">
-                {element.strAlcoholic || element.strCategory}
-              </p>
+              <div className="recipe-title-category">
+                <h1 data-testid="recipe-title">
+                  {element.strMeal || element.strDrink}
+                </h1>
+                <p data-testid="recipe-category">
+                  {element.strAlcoholic || element.strCategory}
+                </p>
+                <h5>Ingredients</h5>
+              </div>
               {ingredients.map((ingredient, indexIngredient) => (
                 <div key={ indexIngredient }>
                   <IngredientCard
@@ -90,7 +93,11 @@ function RecipeInProgress(props) {
                   />
                 </div>
               ))}
-              <p data-testid="instructions">{element.strInstructions}</p>
+              <div className="recipe-instructions">
+                <p data-testid="instructions">
+                  {element.strInstructions}
+                </p>
+              </div>
               <button
                 className="finish-recipe-button"
                 data-testid="finish-recipe-btn"
