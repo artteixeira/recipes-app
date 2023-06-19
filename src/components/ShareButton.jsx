@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
 import PropTypes from 'prop-types';
-import RecipesContext from '../context/RecipesContext';
 
 import shareIcon from '../images/shareIcon.svg';
 
 function ShareButton({ horizontal, index, type, id }) {
-  const { copiedLinkMessage, setCopiedLinkMessage } = useContext(RecipesContext);
+  const [copiedLinkMessage, setCopiedLinkMessage] = useState(false);
   const url = `http://localhost:3000/${type}/${id}`;
   const test = horizontal ? `${index}-horizontal-share-btn` : 'share-btn';
   return (
