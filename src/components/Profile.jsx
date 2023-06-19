@@ -30,7 +30,6 @@ function Profile() {
         </h1>
         <button
           data-testid="profile-done-btn"
-          className="profile-button"
           onClick={ () => history.push('/done-recipes') }
         >
           Done Recipes
@@ -38,7 +37,6 @@ function Profile() {
 
         <button
           data-testid="profile-favorite-btn"
-          className="profile-button"
           onClick={ () => history.push('/favorite-recipes') }
         >
           Favorite Recipes
@@ -46,7 +44,6 @@ function Profile() {
 
         <button
           data-testid="profile-logout-btn"
-          className="profile-button"
           onClick={ () => {
             localStorage.clear();
             history.push('/');
