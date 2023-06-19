@@ -94,7 +94,10 @@ function RecipeDetails(props) {
                     key={ index }
                     data-testid={ `${index}-ingredient-name-and-measure` }
                   >
-                    <li>{`${ingredient} - ${measuresList[index]}`}</li>
+                    <li>
+                      <span>{ingredient}</span>
+                      <span>{measuresList[index] && ` - ${measuresList[index]}`}</span>
+                    </li>
                   </ul>
                 ))}
                 <p data-testid="instructions">{element.strInstructions}</p>

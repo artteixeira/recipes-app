@@ -51,8 +51,7 @@ export default function IngredientCard(
       />
       <span>
         <span>{ingredient}</span>
-        <span>{' - '}</span>
-        <span>{measures[index]}</span>
+        <span>{measures[index] && ` - ${measures[index]}`}</span>
       </span>
     </label>
   );

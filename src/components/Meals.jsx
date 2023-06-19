@@ -13,7 +13,8 @@ function Meals() {
     categoryList,
     fetchAPI,
     fetchByFilter,
-    history } = useContext(RecipesContext);
+    history,
+    setSearchBarFilter } = useContext(RecipesContext);
 
   const [filterState, setFilterState] = useState('');
 
@@ -32,7 +33,13 @@ function Meals() {
         <section className="filter-btns-section">
           <button
             data-testid="All-category-filter"
-            onClick={ () => { fetchAPI(); } }
+            onClick={ () => {
+              setSearchBarFilter({
+                type: '',
+                value: '',
+              });
+              fetchAPI();
+            } }
           >
             All
           </button>
