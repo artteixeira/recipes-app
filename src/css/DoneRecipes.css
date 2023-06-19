@@ -45,11 +45,11 @@
   position: relative;
 }
 
-.recipe-photo > img {
+/* .recipe-photo > img {
   background-position: center;
   background-size: cover;
   width: 200px;
-}
+} */
 
 .recipes-list-section {
   border: none;
