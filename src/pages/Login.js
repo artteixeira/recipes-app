@@ -4,7 +4,7 @@ import '../css/Login.css';
 import { useHistory } from 'react-router-dom';
 import validator from 'validator';
 
-import LogoLogin from '../images/LogoLogin.png';
+import imgLogo from '../images/imgLogo.png';
 
 import RecipesContext from '../context/RecipesContext';
 
@@ -21,7 +21,7 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="input-container">
-        <img src={ LogoLogin } alt="Logo App" />
+        <img src={ imgLogo } alt="Logo App" />
         <input
           placeholder="Email"
           type="email"
