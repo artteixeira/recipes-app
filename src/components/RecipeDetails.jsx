@@ -79,28 +79,26 @@ function RecipeDetails(props) {
                   <ShareButton type={ type } id={ id } />
                 </div>
               </div>
-              <div>
+              <div className="recipe-title-category">
                 <h1 data-testid="recipe-title">
                   {element.strMeal || element.strDrink}
                 </h1>
                 <p data-testid="recipe-category">
                   {element.strAlcoholic || element.strCategory}
                 </p>
+                <h5>Ingredients</h5>
               </div>
-              <div className="">
-                <p>Ingredients</p>
+              <div className="recipe-ingredients">
                 {ingredientsList.map((ingredient, index) => (
-                  <div
+                  <ul
                     key={ index }
                     data-testid={ `${index}-ingredient-name-and-measure` }
                   >
-                    <span>{ingredient}</span>
-                    <span>{' - '}</span>
-                    <span>{measuresList[index]}</span>
-                  </div>
+                    <li>{`${ingredient} - ${measuresList[index]}`}</li>
+                  </ul>
                 ))}
+                <p data-testid="instructions">{element.strInstructions}</p>
               </div>
-              <p data-testid="instructions">{element.strInstructions}</p>
               {element.strYoutube && (
                 <iframe
                   data-testid="video"
