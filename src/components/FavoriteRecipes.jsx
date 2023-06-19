@@ -3,6 +3,7 @@ import Header from './Header';
 import ShareButton from './ShareButton';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import RecipesContext from '../context/RecipesContext';
+import '../css/FavoriteRecipes.css';
 
 function FavoriteRecipes() {
   const { headerState, history } = useContext(RecipesContext);
@@ -41,71 +42,84 @@ function FavoriteRecipes() {
   return (
     <div>
       <Header />
-      {['All', 'Food', 'Drink'].map((element, index) => {
-        const newElement = element === 'Food' ? 'meal' : element;
-        return (
-          <button
-            data-testid={ `filter-by-${newElement.toLowerCase()}-btn` }
-            key={ index }
-            value={ element }
-            onClick={ ({ target }) => {
-              const value = target.value === 'Food' ? 'meal' : target.value.toLowerCase();
-              setTypeFilter(value);
-            } }
-          >
-            {element}
-          </button>
-        );
-      })}
-      { newStorage && newStorage.filter(filterStorage).map((element, index) => (
-        <div key={ index }>
-          <button
-            onClick={ () => {
-              history.push(`/${element.type}s/${element.id}`);
-            } }
-          >
-            <img
-              width={ 100 }
-              data-testid={ `${index}-horizontal-image` }
-              src={ element.image }
-              alt={ element.name }
-            />
-
-            <p data-testid={ `${index}-horizontal-top-text` }>
-              {element.alcoholicOrNot
-              || (`${element.nationality} - ${element.category}`)}
-            </p>
-            <p data-testid={ `${index}-horizontal-name` }>{element.name}</p>
-            <p data-testid={ `${index}-horizontal-done-date` }>{element.doneDate}</p>
-
-            {element.tags && element.tags.slice(0, 2).map((tag, indexTag) => (
-              <p
-                key={ indexTag }
-                data-testid={ `${index}-${tag}-horizontal-tag` }
+      <div className="container">
+        <section className="filter-btn-section">
+          {['All', 'Food', 'Drink'].map((element, index) => {
+            const newElement = element === 'Food' ? 'meal' : element;
+            return (
+              <button
+                data-testid={ `filter-by-${newElement.toLowerCase()}-btn` }
+                key={ index }
+                value={ element }
+                onClick={ ({ target }) => {
+                  const value = target
+                    .value === 'Food' ? 'meal' : target.value.toLowerCase();
+                  setTypeFilter(value);
+                } }
               >
-                {tag}
-              </p>
-            ))}
-          </button>
-          <ShareButton
-            horizontal
-            index={ index }
-            type={ `${element.type}s` }
-            id={ element.id }
-          />
-          <button
-            src={ blackHeartIcon }
-            data-testid={ `${index}-horizontal-favorite-btn` }
-            onClick={ () => {
-              storage.splice(index, 1);
-              localStorage.setItem('favoriteRecipes', JSON.stringify(storage));
-              setRefresh(true);
-            } }
-          >
-            <img src={ blackHeartIcon } alt="Black heart icon" />
-          </button>
+                {element}
+              </button>
+            );
+          })}
+
+        </section>
+        <div className="recipes-list-section">
+          { newStorage && newStorage.filter(filterStorage).map((element, index) => (
+            <div key={ index }>
+              <button
+                onClick={ () => {
+                  history.push(`/${element.type}s/${element.id}`);
+                } }
+              >
+                <div className="recipe-photo">
+                  <img
+                    width={ 100 }
+                    data-testid={ `${index}-horizontal-image` }
+                    src={ element.image }
+                    alt={ element.name }
+                  />
+                </div>
+                <p data-testid={ `${index}-horizontal-top-text` }>
+                  {element.alcoholicOrNot
+              || (`${element.nationality} - ${element.category}`)}
+                </p>
+                <p data-testid={ `${index}-horizontal-name` }>{element.name}</p>
+                <p data-testid={ `${index}-horizontal-done-date` }>{element.doneDate}</p>
+
+                {element.tags && element.tags.slice(0, 2).map((tag, indexTag) => (
+                  <p
+                    key={ indexTag }
+                    data-testid={ `${index}-${tag}-horizontal-tag` }
+                  >
+                    {tag}
+                  </p>
+                ))}
+              </button>
+
+              <section className="icon-buttons">
+                <ShareButton
+                  horizontal
+                  index={ index }
+                  type={ `${element.type}s` }
+                  id={ element.id }
+                />
+                <button
+                  src={ blackHeartIcon }
+                  data-testid={ `${index}-horizontal-favorite-btn` }
+                  onClick={ () => {
+                    storage.splice(index, 1);
+                    localStorage.setItem('favoriteRecipes', JSON.stringify(storage));
+                    setRefresh(true);
+                  } }
+                >
+                  <img src={ blackHeartIcon } alt="Black heart icon" />
+                </button>
+              </section>
+            </div>
+          ))}
+
         </div>
-      ))}
+      </div>
     </div>
   );
 }
