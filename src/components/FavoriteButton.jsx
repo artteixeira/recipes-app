@@ -56,6 +56,7 @@ function FavoriteButton({ id, path }) {
 
   return (
     <button
+      className="fav-button"
       data-testid="favorite-btn"
       src={ favoriteRecipe ? blackHeartIcon : whiteHeartIcon }
       onClick={ () => {
@@ -64,8 +65,8 @@ function FavoriteButton({ id, path }) {
       } }
     >
       { favoriteRecipe
-        ? (<img src={ blackHeartIcon } alt="Black heart icon" />)
-        : (<img src={ whiteHeartIcon } alt="White heart icon" />)}
+        ? (<img src={ blackHeartIcon } alt="Black heart icon" width={ 20 } />)
+        : (<img src={ whiteHeartIcon } alt="White heart icon" width={ 20 } />)}
     </button>
   );
 }

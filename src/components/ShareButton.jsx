@@ -12,6 +12,7 @@ function ShareButton({ horizontal, index, type, id }) {
   return (
     <div>
       <button
+        className="fav-button"
         data-testid={ test }
         src={ shareIcon }
         onClick={ () => {
@@ -21,9 +22,9 @@ function ShareButton({ horizontal, index, type, id }) {
           setTimeout(() => setCopiedLinkMessage(false), magicNumber);
         } }
       >
-        <img src={ shareIcon } alt="Share icon" />
+        <img className="fav-icon" src={ shareIcon } alt="Share icon" width={ 20 } />
       </button>
-      {copiedLinkMessage && (<h1>Link copied!</h1>)}
+      {copiedLinkMessage && (<p>Link copied!</p>)}
     </div>
   );
 }

@@ -1,0 +1,21 @@
+.footer {
+  align-content: center;
+  background-color: #a8916d;
+  bottom: 0;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+}
+
+.meal-button {
+  background-color: #a8916d;
+  border: none;
+}
+
+.drink-button {
+  background-color: #a8916d;
+  border: none;
+}

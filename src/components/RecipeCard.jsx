@@ -6,20 +6,21 @@ export default function RecipeCard(props) {
   const { name, index, img } = values;
   return (
     <div
-      className="recipe-card"
+      className="recipe-cards"
       data-testid={ `${index}-recipe-card` }
     >
+      <img
+        className="recipe-img-card"
+        data-testid={ `${index}-card-img` }
+        src={ img }
+        alt={ name }
+      />
       <p
+        className="recipe-name-card"
         data-testid={ `${index}-card-name` }
       >
         {name}
       </p>
-      <img
-        data-testid={ `${index}-card-img` }
-        className="img-card"
-        src={ img }
-        alt={ name }
-      />
     </div>
   );
 }

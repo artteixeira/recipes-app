@@ -1,0 +1,74 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.recipe-detail-container {
+  align-items: center;
+  background-color: #e9e2d9;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-photo {
+  display: flex;
+  position: relative;
+}
+
+.recipe-photo > img {
+  background-position: center;
+  background-size: cover;
+  width: 360px;
+}
+
+.fav-share-div {
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  margin: 15px;
+  position: absolute;
+  right: 0;
+}
+
+.fav-button {
+  background-color: white;
+  border-color: #b6aea4;
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.share-button {
+  background-color: white;
+  border-color: #e9e2d9;
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.recomended-card-section {
+  align-items: center;
+  background-color: #e9e2d9;
+  display: flex;
+  gap: 5px;
+  height: 250px;
+  margin-bottom: 50px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 360px;
+}
+
+.recomended-cards {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+}
+
+.img-recomended-card {
+  height: 180px;
+}
+
+.name-recomended-card {
+  margin-top: 10px;
+}

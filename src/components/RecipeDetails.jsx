@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import '../css/RecipeDetails.css';
+
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import RecipesContext from '../context/RecipesContext';
@@ -49,74 +51,80 @@ function RecipeDetails(props) {
   }, []);
 
   return (
-    <>
-      <ShareButton type={ type } id={ id } />
-      <FavoriteButton id={ id } path={ path } />
-      <div>
-        {recipeDetail
-          && recipeDetail.map((element) => {
-            const ingredientsList = [];
-            const measuresList = [];
-            const magicNumber = 20;
-            for (let i = 0; i <= magicNumber; i += 1) {
-              const ingredient = element[`strIngredient${i}`];
-              const measure = element[`strMeasure${i}`];
-              if (ingredient) ingredientsList.push(ingredient);
-              if (measure) measuresList.push(measure);
-            }
-            return (
-              <div key={ element.idMeal || element.idDrink }>
-                <h1 data-testid="recipe-title">
-                  {element.strMeal || element.strDrink}
-                </h1>
+    <div>
+      {recipeDetail
+        && recipeDetail.map((element) => {
+          const ingredientsList = [];
+          const measuresList = [];
+          const magicNumber = 20;
+          for (let i = 0; i <= magicNumber; i += 1) {
+            const ingredient = element[`strIngredient${i}`];
+            const measure = element[`strMeasure${i}`];
+            if (ingredient) ingredientsList.push(ingredient);
+            if (measure) measuresList.push(measure);
+          }
+          return (
+            <section
+              key={ element.idMeal || element.idDrink }
+              className="recipe-detail-container"
+            >
+              <div className="recipe-photo">
                 <img
-                  width="200"
                   data-testid="recipe-photo"
                   src={ element.strMealThumb || element.strDrinkThumb }
                   alt={ element.strMeal || element.strDrink }
                 />
+                <div className="fav-share-div">
+                  <FavoriteButton id={ id } path={ path } />
+                  <ShareButton type={ type } id={ id } />
+                </div>
+              </div>
+              <div>
+                <h1 data-testid="recipe-title">
+                  {element.strMeal || element.strDrink}
+                </h1>
                 <p data-testid="recipe-category">
                   {element.strAlcoholic || element.strCategory}
                 </p>
-                <div>
-                  <p>Ingredients</p>
-                  {ingredientsList.map((ingredient, index) => (
-                    <div
-                      key={ index }
-                      data-testid={ `${index}-ingredient-name-and-measure` }
-                    >
-                      <span>{ingredient}</span>
-                      <span>{' - '}</span>
-                      <span>{measuresList[index]}</span>
-                    </div>
-                  ))}
-                </div>
-                <p data-testid="instructions">{element.strInstructions}</p>
-                {element.strYoutube && (
-                  <iframe
-                    data-testid="video"
-                    width="560"
-                    height="315"
-                    src={ element.strYoutube.replace('watch?v=', 'embed/') }
-                    title="YouTube video player"
-                    allow="accelerometer;
-                  autoplay;
-                  clipboard-write;
-                  encrypted-media;
-                  gyroscope;
-                  picture-in-picture;
-                  web-share"
-                    allowFullScreen
-                  />
-                )}
               </div>
-            );
-          })}
-      </div>
-      <div className="recomended-card">
+              <div className="">
+                <p>Ingredients</p>
+                {ingredientsList.map((ingredient, index) => (
+                  <div
+                    key={ index }
+                    data-testid={ `${index}-ingredient-name-and-measure` }
+                  >
+                    <span>{ingredient}</span>
+                    <span>{' - '}</span>
+                    <span>{measuresList[index]}</span>
+                  </div>
+                ))}
+              </div>
+              <p data-testid="instructions">{element.strInstructions}</p>
+              {element.strYoutube && (
+                <iframe
+                  data-testid="video"
+                  width="360"
+                  height="315"
+                  src={ element.strYoutube.replace('watch?v=', 'embed/') }
+                  title="YouTube video player"
+                  allow="accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+                web-share"
+                  allowFullScreen
+                />
+              )}
+            </section>
+          );
+        })}
+      <section className="recomended-card-section">
         {recomendedList?.slice(0, magic).map((element, index) => (
           <div
-            className="recipe-card"
+            className="recomended-cards"
             key={ element.idMeal || element.idDrink }
             data-testid={ `${index}-recommendation-card` }
           >
@@ -125,22 +133,25 @@ function RecipeDetails(props) {
               src={ element.strMealThumb || element.strDrinkThumb }
               alt={ element.strMeal || element.strDrink }
             />
-            <h1 data-testid={ `${index}-recommendation-title` }>
+            <h3
+              className="name-recomended-card"
+              data-testid={ `${index}-recommendation-title` }
+            >
               {element.strMeal || element.strDrink}
-            </h1>
+            </h3>
           </div>
         ))}
-      </div>
-      <button
-        className="start-recipe-button"
-        data-testid="start-recipe-btn"
-        onClick={ () => {
-          history.push(`/${type}/${id}/in-progress`);
-        } }
-      >
-        {!recipeStatus ? 'Start Recipe' : 'Continue Recipe'}
-      </button>
-    </>
+        <button
+          className="start-recipe-button"
+          data-testid="start-recipe-btn"
+          onClick={ () => {
+            history.push(`/${type}/${id}/in-progress`);
+          } }
+        >
+          {!recipeStatus ? 'Start Recipe' : 'Continue Recipe'}
+        </button>
+      </section>
+    </div>
   );
 }
 
