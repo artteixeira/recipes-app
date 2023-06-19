@@ -91,7 +91,6 @@ function DoneRecipes() {
             type={ `${element.type}s` }
             id={ element.id }
           />
-          ;
         </div>
       ))}
     </div>

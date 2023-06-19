@@ -5,6 +5,8 @@ import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import IngredientCard from './IngredientCard';
 
+import '../css/RecipeInProgress.css';
+
 function RecipeInProgress(props) {
   const { match } = props;
   const {
@@ -53,15 +55,22 @@ function RecipeInProgress(props) {
             if (measure) measures.push(measure);
           }
           return (
-            <div key={ index }>
-              <ShareButton id={ id } type={ type } />
-              <FavoriteButton id={ id } path={ path } />
-              <img
-                width={ 50 }
-                src={ element.strMealThumb || element.strDrinkThumb }
-                alt={ element.strMeal || element.strDrink }
-                data-testid="recipe-photo"
-              />
+            <div
+              key={ index }
+              className="recipe-detail-container"
+            >
+              <div className="recipe-photo">
+                <img
+                  src={ element.strMealThumb || element.strDrinkThumb }
+                  alt={ element.strMeal || element.strDrink }
+                  data-testid="recipe-photo"
+                />
+                <div className="fav-share-div">
+                  <FavoriteButton id={ id } path={ path } />
+                  <ShareButton type={ type } id={ id } />
+                </div>
+
+              </div>
               <h1 data-testid="recipe-title">
                 {element.strMeal || element.strDrink}
               </h1>
@@ -83,6 +92,7 @@ function RecipeInProgress(props) {
               ))}
               <p data-testid="instructions">{element.strInstructions}</p>
               <button
+                className="finish-recipe-button"
                 data-testid="finish-recipe-btn"
                 disabled={ !disableButton }
                 onClick={ () => {

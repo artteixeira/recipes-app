@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import RecipesContext from '../context/RecipesContext';
+import '../css/Profile.css';
 
 function Profile() {
   const { headerState } = useContext(RecipesContext);
@@ -22,11 +23,14 @@ function Profile() {
     <div>
       <Header />
       <main>
-        <h1 data-testid="profile-email">
+        <h1
+          data-testid="profile-email"
+        >
           {email}
         </h1>
         <button
           data-testid="profile-done-btn"
+          className="profile-button"
           onClick={ () => history.push('/done-recipes') }
         >
           Done Recipes
@@ -34,6 +38,7 @@ function Profile() {
 
         <button
           data-testid="profile-favorite-btn"
+          className="profile-button"
           onClick={ () => history.push('/favorite-recipes') }
         >
           Favorite Recipes
@@ -41,6 +46,7 @@ function Profile() {
 
         <button
           data-testid="profile-logout-btn"
+          className="profile-button"
           onClick={ () => {
             localStorage.clear();
             history.push('/');

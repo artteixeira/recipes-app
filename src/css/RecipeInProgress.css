@@ -45,34 +45,6 @@
   padding: 8px;
 }
 
-.recipe-title-category {
-  margin-left: 10px;
-  width: 360px;
-}
-
-.recipe-title-category > p {
-  margin-top: -20px;
-  opacity: 0.8;
-}
-
-.recipe-title-category > h5 {
-  margin-bottom: 15px;
-}
-
-.recipe-ingredients {
-  background-color: #f5f1ec;
-  width: 350px;
-}
-
-.recipe-ingredients > ul {
-  margin-top: 20px;
-}
-
-.recipe-ingredients > p {
-  margin: 10px;
-}
-
-
 .recomended-card-section {
   align-items: center;
   background-color: #e9e2d9;
@@ -99,17 +71,4 @@
 
 .name-recomended-card {
   margin-top: 10px;
-}
-
-.finish-recipe-button {
-  background-color: #8f3e26;
-  border: none;
-  bottom: 0;
-  color: white;
-  font-size: 15px;
-  font-weight: 400;
-  height: 50px;
-  position: fixed;
-  text-transform: uppercase;
-  width: 360px;
 }
